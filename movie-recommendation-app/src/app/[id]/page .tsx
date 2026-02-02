@@ -1,14 +1,20 @@
-// src/app/page.tsx
 'use client';
 
-import { useTrendingMovies } from '@/hooks/useTrendingMovies';
-import { MovieGrid } from '@/components/organisms/MovieGrid';
+import { useParams } from 'next/navigation';
+import { useMovieDetails } from '@/hooks/useMovieDetails';
 
-export default function Home() {
-  const { data, isLoading, error } = useTrendingMovies();
+export default function MoviePage() {
+  const { id } = useParams<{ id: string }>();
+  const { movie, loading, error } = useMovieDetails(id);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Failed to load movies</p>;
+  if (loading) return <p>Loading movie...</p>;
+  if (error) return <p>{error}</p>;
+  if (!movie) return <p>Movie not found</p>;
 
-  return <MovieGrid movies={data ?? []} />;
+  return (
+    <div style={{ padding: '2rem' }}>
+      <h1>{movie.title}</h1>
+      <p>{movie.overview}</p>
+    </div>
+  );
 }
