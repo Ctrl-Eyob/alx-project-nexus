@@ -4,7 +4,7 @@ import { tmdbClient } from '@/services/tmdbClient';
 import { Movie } from '@/types/movie';
 
 export const useTrendingMovies = () =>
-  useQuery<Movie[]>({
+  useQuery<Movie[]>(
     queryKey: ['trending'],
     queryFn: async () => {
       const res = await tmdbClient.get('/trending/movie/week');
