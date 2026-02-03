@@ -4,7 +4,9 @@ import { useParams } from 'next/navigation';
 import { useMovieDetails } from '@/hooks/useMovieDetails';
 
 export default function MoviePage() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams();
+  const id = params?.id as string;
+
   const { movie, loading, error } = useMovieDetails(id);
 
   if (loading) return <p>Loading movie...</p>;
@@ -12,9 +14,9 @@ export default function MoviePage() {
   if (!movie) return <p>Movie not found</p>;
 
   return (
-    <div style={{ padding: '2rem' }}>
+    <main style={{ padding: '2rem' }}>
       <h1>{movie.title}</h1>
       <p>{movie.overview}</p>
-    </div>
+    </main>
   );
 }
