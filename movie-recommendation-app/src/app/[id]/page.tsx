@@ -1,6 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
-import { useMovieDetails } from '@/hooks/useMovieDetails';
+import { useMovieDetails } from '../../hooks/useMovieDetails';
 export default function MoviePage() {
   const params = useParams();
   const id = params?.id as string;
