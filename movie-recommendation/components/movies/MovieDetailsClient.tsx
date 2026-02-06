@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { Movie } from '@/types/movie';
 import { Star, Clock, Calendar, Play, Share2, Bookmark, Check } from 'lucide-react';
 import { useWatchlist } from '@/context/WatchlistContext';
-import CastSection from './CastSection';
-import ReviewSection from './ReviewSection';
+import CastSection from '@/components/movies/CastSection';
+import ReviewSection from '@/components/movies/ReviewSection';
 
 interface MovieDetailsClientProps {
   movie: Movie;
