@@ -1,9 +1,8 @@
-// components/movies/MovieCard.tsx
 'use client';
 
 import { Movie } from '@/types/movie';
 import { Star, Clock, Calendar, Plus, Check } from 'lucide-react';
-import { useWatchlist } from '@/context/WatchlistContext';
+import { useWatchlist } from '@\context\WatchlistContext.tsx';
 import { useState } from 'react';
 import Link from 'next/link';
 
