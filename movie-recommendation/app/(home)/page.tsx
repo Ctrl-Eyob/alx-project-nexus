@@ -1,4 +1,4 @@
-// app/(home)/page.tsx
+
 import HeroSection from '@/components/movies/HeroSection';
 import MovieGrid from '@/components/movies/MovieGrid';
 import { nowPlayingMovies, topRatedMovies } from '@/lib/data';

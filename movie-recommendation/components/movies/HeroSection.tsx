@@ -1,4 +1,4 @@
-// components/movies/HeroSection.tsx
+
 'use client';
 
 import { useState, useEffect } from 'react';

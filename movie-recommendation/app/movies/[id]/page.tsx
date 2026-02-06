@@ -1,4 +1,3 @@
-// app/movies/[id]/page.tsx
 import { notFound } from 'next/navigation';
 import { movies } from '@/lib/data';
 import MovieDetailsClient from '@/components/movies/MovieDetailsClient';
