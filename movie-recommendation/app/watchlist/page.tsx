@@ -1,4 +1,3 @@
-// app/watchlist/page.tsx
 'use client';
 
 import { useWatchlist } from '@/context/WatchlistContext';
