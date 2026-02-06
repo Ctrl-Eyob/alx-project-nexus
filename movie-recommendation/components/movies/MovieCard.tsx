@@ -2,7 +2,7 @@
 
 import { Movie } from '@/types/movie';
 import { Star, Clock, Calendar, Plus, Check } from 'lucide-react';
-import { useWatchlist } from '@\context\WatchlistContext.tsx';
+import { useWatchlist } from '@\context\WatchlistContext';
 import { useState } from 'react';
 import Link from 'next/link';
 

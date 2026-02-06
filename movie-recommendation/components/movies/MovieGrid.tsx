@@ -1,4 +1,3 @@
-// components/movies/MovieGrid.tsx
 import { Movie } from '@/types/movie';
 import MovieCard from './MovieCard';
 

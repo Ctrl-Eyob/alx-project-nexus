@@ -1,5 +1,5 @@
 // lib/data.ts
-import { Movie, Genre } from '@/types/movie.ts';
+import { Movie, Genre } from 'c:/Users/etcre/alx-project-nexus/movie-recommendation/types/movie';
 
 export const genres: Genre[] = [
   { id: '1', name: 'Action' },
