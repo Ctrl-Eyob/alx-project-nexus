@@ -1,15 +1,15 @@
-import MovieCard from "../components/MovieCard";
 import { movies } from "../data/movies";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import tmdb from "../services/tmdb";
 import MovieCard from "../components/MovieCard";
-import Spinner from "../components/Spinner";
+import Spinner from "../components/spinner";
 
 export default function Home() {
   const [popular, setPopular] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchHomeMovies = async () => {
@@ -35,35 +35,6 @@ export default function Home() {
 
   return (
     <div className="px-10 space-y-16">
-
-      {/* Watch List */}
-      <section>
-        <h2 className="text-xl mb-4">Watch List</h2>
-        <div className="flex gap-6 overflow-x-auto">
-          {popular.map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
-      </section>
-
-      {/* Upcoming */}
-      <section>
-        <h2 className="text-xl mb-4">Upcoming Movies</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {upcoming.map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
-      </section>
-
-    </div>
-  );
-}
-
-export default function Home() {
-  return (
-    <div className="px-10 space-y-16">
-
       {/* Hero Search */}
       <div className="flex items-center gap-4">
         <button className="bg-nexusOrange px-6 py-3 rounded-full font-semibold">
@@ -75,6 +46,8 @@ export default function Home() {
           <input
             className="bg-transparent ml-3 outline-none w-full"
             placeholder="Search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
@@ -83,7 +56,17 @@ export default function Home() {
       <section>
         <h2 className="text-xl mb-4">Watch List</h2>
         <div className="flex gap-6 overflow-x-auto">
-          {movies.slice(0, 6).map(movie => (
+          {popular.slice(0, 6).map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      </section>
+
+      {/* Upcoming Movies */}
+      <section>
+        <h2 className="text-xl mb-4">Upcoming Movies</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {upcoming.slice(0, 8).map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
@@ -93,14 +76,18 @@ export default function Home() {
       <section>
         <h2 className="text-xl mb-4">Top Rated</h2>
         <ol className="space-y-4">
-          {movies.slice(0, 4).map((movie, i) => (
+          {popular.slice(0, 4).map((movie, i) => (
             <li key={movie.id} className="flex items-center gap-4">
               <span className="text-nexusOrange font-bold">{i + 1}</span>
-              <img src={movie.poster} className="w-12 rounded-lg" />
+              <img 
+                src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} 
+                className="w-12 rounded-lg" 
+                alt={movie.title}
+              />
               <div>
-                <p>{movie.title}</p>
+                <p className="font-medium">{movie.title}</p>
                 <span className="text-sm text-nexusGray">
-                  {movie.release}
+                  {movie.release_date ? movie.release_date.split("-")[0] : "N/A"}
                 </span>
               </div>
             </li>
