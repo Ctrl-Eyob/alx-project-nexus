@@ -1,6 +1,64 @@
 import MovieCard from "../components/MovieCard";
 import { movies } from "../data/movies";
 import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import tmdb from "../services/tmdb";
+import MovieCard from "../components/MovieCard";
+import Spinner from "../components/Spinner";
+
+export default function Home() {
+  const [popular, setPopular] = useState([]);
+  const [upcoming, setUpcoming] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHomeMovies = async () => {
+      try {
+        const [popularRes, upcomingRes] = await Promise.all([
+          tmdb.get("/movie/popular"),
+          tmdb.get("/movie/upcoming"),
+        ]);
+
+        setPopular(popularRes.data.results);
+        setUpcoming(upcomingRes.data.results);
+      } catch (err) {
+        console.error("TMDB Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomeMovies();
+  }, []);
+
+  if (loading) return <Spinner />;
+
+  return (
+    <div className="px-10 space-y-16">
+
+      {/* Watch List */}
+      <section>
+        <h2 className="text-xl mb-4">Watch List</h2>
+        <div className="flex gap-6 overflow-x-auto">
+          {popular.map(movie => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      </section>
+
+      {/* Upcoming */}
+      <section>
+        <h2 className="text-xl mb-4">Upcoming Movies</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {upcoming.map(movie => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      </section>
+
+    </div>
+  );
+}
 
 export default function Home() {
   return (
