@@ -1,4 +1,3 @@
-import { movies } from "../data/movies";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import tmdb from "../services/tmdb";
