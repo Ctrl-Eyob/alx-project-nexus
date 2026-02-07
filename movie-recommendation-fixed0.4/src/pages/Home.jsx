@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import tmdb from "../services/tmdb";
 import MovieCard from "../components/MovieCard";
 import Spinner from "../components/spinner";
-
 export default function Home() {
   const [popular, setPopular] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
