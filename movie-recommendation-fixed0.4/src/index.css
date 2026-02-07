@@ -5,3 +5,16 @@
 body {
   @apply bg-nexusDark text-white;
 }
+@layer base {
+  body {
+    @apply text-white;
+    background-color: #0a0a1f; /* Your custom dark color */
+  }
+}
+
+/* OR define it properly with @layer */
+@layer utilities {
+  .bg-nexusDark {
+    background-color: #0a0a1f;
+  }
+}
