@@ -1,66 +1,89 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
+import styled from 'styled-components';
+import { useMovies } from '@/hooks/useMovies';
+import { MovieCard } from '@/components/MovieCard';
+import { useWatchlist } from '@/hooks/useWatchlist';
+
+const Wrapper = styled.main`
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
+
+const HeroSearch = styled.input`
+  width: 100%;
+  padding: 18px 24px;
+  border-radius: 999px;
+  border: none;
+  font-size: 18px;
+  background: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+const Section = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 20px;
+`;
+
+const HorizontalScroll = styled.div`
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+`;
+
+export default function HomePage() {
+  const { movies: trending } = useMovies('trending');
+  const { movies: upcoming } = useMovies('upcoming');
+  const { watchlist } = useWatchlist();
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <Wrapper>
+      {/* HERO SEARCH */}
+      <HeroSearch placeholder="Search movies, genres, actors..." />
+
+      {/* WATCHLIST */}
+      <Section>
+        <SectionTitle>Your Watchlist</SectionTitle>
+        <HorizontalScroll>
+          {watchlist.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </HorizontalScroll>
+      </Section>
+
+      {/* UPCOMING */}
+      <Section>
+        <SectionTitle>Upcoming Movies</SectionTitle>
+        <Grid>
+          {upcoming.slice(0, 8).map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </Grid>
+      </Section>
+
+      {/* TOP RATED / TRENDING */}
+      <Section>
+        <SectionTitle>Top Rated</SectionTitle>
+        <Grid>
+          {trending.slice(0, 8).map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </Grid>
+      </Section>
+    </Wrapper>
   );
 }
