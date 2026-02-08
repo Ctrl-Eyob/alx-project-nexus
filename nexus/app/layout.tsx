@@ -16,3 +16,8 @@ export default function RootLayout({
     </html>
   );
 }
+export const metadata = {
+  title: 'NEXUS',
+  description: 'Movie recommendation PWA',
+  manifest: '/manifest',
+};

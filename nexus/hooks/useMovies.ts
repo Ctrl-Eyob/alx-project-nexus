@@ -2,31 +2,29 @@ import { useEffect, useState } from 'react';
 import { tmdb } from '@/services/tmdb';
 import { Movie } from '@/types/movie';
 
+type MovieType = 'trending' | 'upcoming' | 'topRated';
 
-export function useMovies(type: 'trending' | 'upcoming') {
-const [movies, setMovies] = useState<Movie[]>([]);
-const [loading, setLoading] = useState(true);
-const [error, setError] = useState<string | null>(null);
+export function useMovies(type: MovieType) {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
 
-useEffect(() => {
-async function load() {
-try {
-setLoading(true);
-const data =
-type === 'trending'
-? await tmdb.trending()
-: await tmdb.upcoming();
-setMovies(data.results);
-} catch (e) {
-setError('Unable to load movies');
-} finally {
-setLoading(false);
-}
-}
-load();
-}, [type]);
+      const data =
+        type === 'trending'
+          ? await tmdb.trending()
+          : type === 'upcoming'
+          ? await tmdb.upcoming()
+          : await tmdb.topRated();
 
+      setMovies(data.results);
+      setLoading(false);
+    }
 
-return { movies, loading, error };
+    load();
+  }, [type]);
+
+  return { movies, loading };
 }

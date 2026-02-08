@@ -5,14 +5,7 @@ import { useParams } from 'next/navigation';
 import styled from 'styled-components';
 import { tmdb } from '@/services/tmdb';
 import { CastCard } from '@/components/CastCard';
-import { CastMember } from '@/types/movie';
-
-const [cast, setCast] = useState<CastMember[]>([]);
-
-
-const Wrapper = styled.div`
-  padding: 24px;
-`;
+import { Recommendations } from '@/components/Recommendations';
 
 const Tabs = styled.div`
   display: flex;
@@ -23,46 +16,37 @@ const Tabs = styled.div`
 const Tab = styled.button<{ active?: boolean }>`
   background: none;
   border: none;
+  cursor: pointer;
+  font-size: 16px;
   color: ${({ theme, active }) =>
     active ? theme.colors.primary : theme.colors.text};
-  font-size: 16px;
-  cursor: pointer;
 `;
 
 export default function MovieDetailsPage() {
-  const params = useParams();
-  const id = params?.id as string;
-
+  const { id } = useParams();
   const [tab, setTab] = useState<'about' | 'reviews' | 'cast'>('about');
-  const [movie, setMovie] = useState<any>(null);
+  const [movie, setMovie] = useState<any>();
   const [cast, setCast] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!id) return;
-
     async function load() {
-      try {
-        const details = await tmdb.movieDetails(id);
-        const credits = await tmdb.credits(id);
-        setMovie(details);
-        setCast(credits.cast || []);
-      } catch (err) {
-        console.error('Failed to load movie:', err);
-      }
+      const details = await tmdb.movieDetails(id as string);
+      const credits = await tmdb.credits(id as string);
+      setMovie(details);
+      setCast(credits.cast);
     }
-
     load();
   }, [id]);
 
-  if (!movie) return <Wrapper>Loading...</Wrapper>;
+  if (!movie) return null;
 
   return (
-    <Wrapper>
+    <div>
       <h1>{movie.title}</h1>
 
       <Tabs>
         <Tab active={tab === 'about'} onClick={() => setTab('about')}>
-          About Movie
+          About
         </Tab>
         <Tab active={tab === 'reviews'} onClick={() => setTab('reviews')}>
           Reviews
@@ -73,22 +57,23 @@ export default function MovieDetailsPage() {
       </Tabs>
 
       {tab === 'about' && <p>{movie.overview}</p>}
-
       {tab === 'reviews' && <p>No reviews yet.</p>}
 
       {tab === 'cast' && (
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateColumns: 'repeat(4,1fr)',
             gap: '16px',
           }}
         >
-          {cast.slice(0, 12).map((actor) => (
+          {cast.slice(0, 12).map(actor => (
             <CastCard key={actor.id} actor={actor} />
           ))}
         </div>
       )}
-    </Wrapper>
+
+      <Recommendations movieId={id as string} />
+    </div>
   );
 }
