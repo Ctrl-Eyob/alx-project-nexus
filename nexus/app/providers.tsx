@@ -1,8 +1,9 @@
 'use client';
 
 import { ThemeProvider } from 'styled-components';
-import { theme } from '@/styles/theme';
 import StyledComponentsRegistry from '@/styles/StyledComponentsRegistry';
+import { theme } from '@/styles/theme';
+import GlobalStyles from '@/styles/GlobalStyles';
 
 export default function Providers({
   children,
@@ -12,6 +13,7 @@ export default function Providers({
   return (
     <StyledComponentsRegistry>
       <ThemeProvider theme={theme}>
+        <GlobalStyles />
         {children}
       </ThemeProvider>
     </StyledComponentsRegistry>
