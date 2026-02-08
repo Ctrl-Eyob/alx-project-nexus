@@ -15,12 +15,22 @@ if (stored) setWatchlist(JSON.parse(stored));
 }, []);
 
 
-const save = (movie: Movie) => {
-const updated = [...watchlist, movie];
-setWatchlist(updated);
-localStorage.setItem(KEY, JSON.stringify(updated));
+const persist = (list: Movie[]) => {
+setWatchlist(list);
+localStorage.setItem(KEY, JSON.stringify(list));
 };
 
 
-return { watchlist, save };
+const save = (movie: Movie) => {
+if (watchlist.find(m => m.id === movie.id)) return;
+persist([...watchlist, movie]);
+};
+
+
+const remove = (id: number) => {
+persist(watchlist.filter(m => m.id !== id));
+};
+
+
+return { watchlist, save, remove };
 }
