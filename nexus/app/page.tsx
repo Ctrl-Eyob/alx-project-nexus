@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useMovies } from '@/hooks/useMovies';
 import { MovieCard } from '@/components/MovieCard';
 import { useWatchlist } from '@/hooks/useWatchlist';
+import { useRouter } from 'next/navigation';
 
 const Wrapper = styled.main`
   padding: 24px;
@@ -46,6 +47,9 @@ const Grid = styled.div`
 `;
 
 export default function HomePage() {
+  // ✅ hooks must be INSIDE the component
+  const router = useRouter();
+
   const { movies: trending } = useMovies('trending');
   const { movies: upcoming } = useMovies('upcoming');
   const { watchlist } = useWatchlist();
@@ -53,7 +57,10 @@ export default function HomePage() {
   return (
     <Wrapper>
       {/* HERO SEARCH */}
-      <HeroSearch placeholder="Search movies, genres, actors..." />
+      <HeroSearch
+        placeholder="Search movies, genres, actors..."
+        onFocus={() => router.push('/browse')}
+      />
 
       {/* WATCHLIST */}
       <Section>
